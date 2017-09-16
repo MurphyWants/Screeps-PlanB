@@ -1,0 +1,1 @@
+I tried in another git repo to make a good screeps routine. This is my PlanB.
