@@ -102,4 +102,24 @@ module.exports {
           false
             end
   */
+
+  /*
+  Get free space around source:
+
+  getFreeSpace: function(src){
+    var position = src.pos;
+    var x_pos = -1;
+    var y_pos = -1;
+    var room_pos;
+    while (x_pos < 2){
+      var y_pos = -1;
+      while (y_pos < 2){
+        room_pos = new RoomPosition(position.x + x_pos, position.y + y_pos, src.room.name);
+        console.log(room_pos.y);
+        y_pos = y_pos + 1;
+    }
+    x_pos = x_pos + 1;
+  }
+}
+  */
 }
