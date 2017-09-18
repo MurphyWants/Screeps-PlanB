@@ -5,8 +5,6 @@ Purpose:
 
 List of Queues:
     1) Tasks
-    2) Spawn
-    3) Military
 
     Harvester Tasks:                                         Task_Queues
       1) Fill Spawner                                               [0]
@@ -27,6 +25,13 @@ List of Queues:
       2) Look for something to ranged attack
       3) Look for something to heal
       4) Go wait at the flag
+
+
+Functions Needed:
+  Spawner
+  Task
+  Harvester Role
+  Patrol Role
 
 */
 module.exports {
