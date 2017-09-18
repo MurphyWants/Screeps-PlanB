@@ -80,11 +80,13 @@ module.exports {
       reqneue task
   */
 
+
+
   /*
    Spawn Queue:
 
    Creeps memory:
-    Spawn, Home (Room), Role
+    Spawn, Home (Room), Role, Mode [Haresting, Task], Current Task
 
     for each room
       check if number of patrol units is less then (number of orange flags in room)
@@ -103,23 +105,27 @@ module.exports {
             end
   */
 
+
+
   /*
   Get free space around source:
+  if source.memory.is_spaced == false
+    Get pos of harvester
+    x_pos, y_pos
+    open_spaces = []
+    source.memory.free_spaces = []
+    check each position of x_y [x: + (-1), (0), (1)] [y: + (-1), (0), (1)]
+      add to list if it is Terrain:[NOT WALL]
+    for (var i in open_spaces)
+      source.memory.free_spaces[i] = []
+      source.memory.free_spaces[i]["x"] = open_spaces[i].x
+      source.memory.free_spaces[i]["y"] = open_spaces[i].y
+      source.memory.free_spaces[i]["is_used"] =  false
 
-  getFreeSpace: function(src){
-    var position = src.pos;
-    var x_pos = -1;
-    var y_pos = -1;
-    var room_pos;
-    while (x_pos < 2){
-      var y_pos = -1;
-      while (y_pos < 2){
-        room_pos = new RoomPosition(position.x + x_pos, position.y + y_pos, src.room.name);
-        console.log(room_pos.y);
-        y_pos = y_pos + 1;
-    }
-    x_pos = x_pos + 1;
-  }
-}
+  if source.memory.is_spaced == true
+    for (var i in source.memory.free_spaces)
+      if source.memory.free_spaces[i]["is_used"] == true
+        if creep is not at space
+          source.memory.free_spaces[i]["is_used"] = false
   */
 }
