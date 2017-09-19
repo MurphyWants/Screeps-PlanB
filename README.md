@@ -15,4 +15,7 @@ Pseudocode Done:
 Pseudocode:
 
 
+Flag Usage:
+- Orange Flags: Spawns Patrol Units at flag
+
 // Game.flags["Guard1"].pos.look()[1].type

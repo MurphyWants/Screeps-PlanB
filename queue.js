@@ -37,7 +37,59 @@ Functions Needed:
 module.exports {
   placer_function: function() {
     console.log("This is a placer function");
+  },
+  spawn_queue: function() {
+    for (var i in Game.spawns) {
+      if (Game.spawns[i] == null) {
+        var spawn_room = Game.spawns[i].room;
+        var count_patrol = _.sum(Game.creeps, (c) => c.room.name == spawn_room.name);
+        var orange_flags = _.filter(Game.flags, (f) => ((f.room.name == spawn_room.name) && (f.color == 1)));
+        var count_orange_flags = orange_flags.length;
+        var energy = (spawn_room.energy_availble) * (2 / 3);
+        var creep_body;
+
+        for (var f in orange_flags) {
+          if (orange_flags[f].memory.has_patrol == undefined)
+            orange_flags[f].memory.has_patrol = false;
+        }
+
+        if ((count_patrol < count_orange_flags) && (energy > 300)) {
+          orange_flags = _.filter(orange_flags, (f) => (f.memory.has_patrol == false)); // filter orange flags to ones without patrol creeps
+
+          if ((orange_flags == undefined) || (orange_flags == null) || (orange_flags.length == 0)) // if the orange_flags is empty or null or undefined for some reason, return
+            return -1;
+
+
+
+          //spawn patrol
+        }
+      }
+    }
+    return 0;
   }
+  /*
+  Spawn Queue:
+
+  Creeps memory:
+  Spawn, Home (Room), Role, Mode [Haresting, Task], Current Task
+
+  for each room
+  check if number of patrol units is less then (number of orange flags in room)
+  True
+  var energy = (room.energy_availble * (2/3)) min of 300
+  switch(true){ // For energy in
+  case (energy < 301): spawn patrol w/ [TOUGH, TOUGH, MOVE, ATTACK, RANGED_ATTACK] // 300
+}
+end
+False
+check if number of harvester units is less than 6 ???
+true
+spawn harvester unit
+end
+false
+end
+*/
+
 
   /*
   Task Queue:
@@ -82,28 +134,6 @@ module.exports {
 
 
 
-  /*
-   Spawn Queue:
-
-   Creeps memory:
-    Spawn, Home (Room), Role, Mode [Haresting, Task], Current Task
-
-    for each room
-      check if number of patrol units is less then (number of orange flags in room)
-        True
-          var energy = (room.energy_availble * (2/3)) min of 300
-          switch(true){ // For energy in
-          case (energy < 301): spawn patrol w/ [TOUGH, TOUGH, MOVE, ATTACK, RANGED_ATTACK] // 300
-        }
-          end
-        False
-          check if number of harvester units is less than 6 ???
-          true
-            spawn harvester unit
-            end
-          false
-            end
-  */
 
 
 
