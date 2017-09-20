@@ -40,7 +40,7 @@ module.exports {
   },
   spawn_queue: function() {
     for (var i in Game.spawns) {
-      if (Game.spawns[i] == null) {
+      if (Game.spawns[i] == null) { // For eachspawn point (mostly checking if each spawn point is busy)
         var spawn_room = Game.spawns[i].room;
         var count_patrol = _.sum(Game.creeps, (c) => c.room.name == spawn_room.name);
         var orange_flags = _.filter(Game.flags, (f) => ((f.room.name == spawn_room.name) && (f.color == 1)));
@@ -59,6 +59,7 @@ module.exports {
           if ((orange_flags == undefined) || (orange_flags == null) || (orange_flags.length == 0)) // if the orange_flags is empty or null or undefined for some reason, return
             return -1;
 
+          orange_flags = orange_flags[0];
 
 
           //spawn patrol
