@@ -1,5 +1,49 @@
-# Create Creep
-- For each room, if the number of patrol creeps is less than PATROL_UNITS
-  - energy = room.energy_availble * 2/3
-  - if energy > 299
-    - Create creep {role: patrol, spawn, home, mode}
+- Main
+  - Creep Spawner
+    - For each spawner
+      - If number of patrol units is less than number of orange flags in room, spawn patrol unit
+      - If harvester unit is less than 6, spawn harvester
+  - Enqueue Tasks
+    - If anything needs building, add it to build queue
+    - If anything needs repairing, add it to repair queue
+    - If anything needs energy, add it to energy queue
+  - For each creep; by role
+    - Patrol unit
+      - Switch (true)
+        - Enemy in room? Mode = attack
+        - Creep needs healing? Mode = heal
+        - Else: Mode = wait
+      - Switch(Mode)
+        - attack:
+          - If something in in range of melee attack: Melee attack
+          - If something is in range of ranged attack: Range attack
+          - Else: move towards enemy
+        - heal
+          - If something is in range of healing: heal
+          - Else move towards it
+        - wait
+          - Go sit at flag
+    - Harvester
+      - if energy == 0, mode = harvest
+      - Switch (mode)
+       - harvest
+        - harvest till full
+       - get_task
+        - Check room.memory.task_queue[0] <== Fill the spawner
+        - Check room.memory.task_queue[1] <== Upgrade the controller
+        - Check room.memory.task_queue[2] <== Fill extensions, towers
+        - Check room.memory.task_queue[3] <== Repair structures
+        - Check room.memory.task_queue[4] <== Build structures
+        - Check room.memory.task_queue[5] <== Destroy structures
+        - Check room.memory.task_queue[6] <== Nothing else to do? Upgrade controller
+       - do_task
+        - switch(task)
+          - fill spawner: Transfer Energy to Spawner until spawner is full
+          - Upgrade controller: Transfer Energy to controller until creep is dead
+          - Fill extensions, tower: Fill structure until full of energy
+          - Repair structures: repair structure to max or limit (Ex: Wall max is 3 million, might stagger it up and up)
+          - Build structure: Go build the structure until it is built
+          - Destroy structure: Destroy the structure until it is destroyed
+          - Upgrade the controller until some other task pops up
+  - Every 10(?) ticks
+    - Build roads from each relevant structure (spawn, controller, source)

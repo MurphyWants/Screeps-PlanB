@@ -74,21 +74,29 @@ module.exports {
   Creeps memory:
   Spawn, Home (Room), Role, Mode [Haresting, Task], Current Task
 
+  Creep Roles/num per room:
+  Harvester = 6, Patrol Units = 1 per orange flag
+
   for each room
-  check if number of patrol units is less then (number of orange flags in room)
-  True
-  var energy = (room.energy_availble * (2/3)) min of 300
-  switch(true){ // For energy in
-  case (energy < 301): spawn patrol w/ [TOUGH, TOUGH, MOVE, ATTACK, RANGED_ATTACK] // 300
-}
-end
-False
-check if number of harvester units is less than 6 ???
-true
-spawn harvester unit
-end
-false
-end
+    check if number of patrol units is less then (number of orange flags in room)
+    True
+    if energy is at least 280
+      spawn patrol unit
+        Generate body parts
+          energy = [floor(energy_availble / 280), (energy_availble % 280)]
+          // each [MOVE, RANGED_ATTACK, ATTACK] == 280 energy, energy[0] = number of times we cna make a move, RANGED_ATTACK, ATTACK, energy[1] = number of tough parts
+      end
+    False
+      check if number of harvester units is less than 6 ???
+      true
+      if energy is at least 200
+        spawn harvester unit
+          Generate body parts:
+            energy = [floor(energy_availble / 200), (energy_availble % 200)]
+            // each [WORK, CARRY, MOVE] == 200 energy, energy[0] = number of times we can make a work carry move, energy[1] = number of tough parts
+      end
+    false
+  end
 */
 
 
