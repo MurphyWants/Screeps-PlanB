@@ -19,3 +19,9 @@ Flag Usage:
 - Orange Flags: Spawns Patrol Units at flag
 
 // Game.flags["Guard1"].pos.look()[1].type
+
+
+Need to Plan For:
+- If things get desynched
+  - Flags + Patrol Units
+- Room Searching

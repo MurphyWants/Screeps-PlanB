@@ -6,13 +6,24 @@
       - If harvester unit is less than 6, spawn harvester
         - **Expand**
   - Enqueue Tasks
-    - **Expand**
     - For each spawner, if energy is equal to 0,
       - If spawner.memory.IsQueued is undefined, define it to be false. If spawner.memory.IsQueued is false, then: helper function: helper_add_queue(spawner, spawner.name, spawner.room)
-    - For each container, extension, lab, link, nuker, powerspawn, storage,tower when energy is 0
-      - if structures.memory.IsQueued is undefined, define it to false. If structures.memory.IsQueued is false, then: helper_add_queue(energy_fill, structure.name, structure.room)
-      - Define name as [structuretype, name]
+      - room.memory.task_queue[0]
     - For each controller, if controller.memory.creep_task is false (should be creep name), helper_add_queue(controller, controller_name, room)
+      - room.memory.task_queue[5]
+    - For each container, extension, lab, link, nuker, powerspawn, storage,tower when energy is 0
+      - if structures.memory.IsQueued is undefined, define it to false. If structures.memory.IsQueued is false, then: helper_add_queue(energy_fill, name, structure.room)
+      - Define name as Structure.id
+      - room.memory.task_queue[10]
+    - For each structure, check if it needs repair:
+      - Tower, Extension, Controller, Spawn, Container: if structure.htis<structure.hitsMax
+      - Road, Rampart Wall: if structure.hits < (structure.hitsMax * (3 / 4))
+      - And if structure.memory.IsQueued == false (or undefined)
+      - Add these to queue: helper_add_queue(repair, id, room)
+      - Queue room.memory.task_queue[15]
+    - For each construction site, if construction_site.memory.IsQueued is undefined, set to true
+      -  helper_add_queue(build, id, room)
+      - Queue room.memory.task_queue[20]
   - For each creep; by role
     - Patrol unit
       - Switch (true)
@@ -36,12 +47,12 @@
         - harvest till full
        - get_task
         - Check room.memory.task_queue[0] <== Fill the spawner
-        - Check room.memory.task_queue[1] <== Upgrade the controller
-        - Check room.memory.task_queue[2] <== Fill extensions, towers
-        - Check room.memory.task_queue[3] <== Repair structures
-        - Check room.memory.task_queue[4] <== Build structures
-        - Check room.memory.task_queue[5] <== Destroy structures
-        - Check room.memory.task_queue[6] <== Nothing else to do? Upgrade controller
+        - Check room.memory.task_queue[5] <== Upgrade the controller
+        - Check room.memory.task_queue[10] <== Fill extensions, towers
+        - Check room.memory.task_queue[15] <== Repair structures
+        - Check room.memory.task_queue[20] <== Build structures
+        - Check room.memory.task_queue[25] <== Destroy structures
+        - Check room.memory.task_queue[30] <== Nothing else to do? Upgrade controller
        - do_task
         - switch(task)
           - fill spawner: Transfer Energy to Spawner until spawner is full
@@ -71,16 +82,22 @@
           ]
     - const Pos = new RoomPosition(Object.x, Object.y, roomname)
     - Pos.lookfor(road) or lookfor(construction_site for road), if found, end, else make construction for road
-  - helper_add_queue(type, name, room)
+  - helper_add_queue(type, name/id, room)
     - switch(type)
       - spawner:
         - room.memory.task_queue[0].push([spawner, name, room])
         - break;
       - controller:
-        - room.memory.task_queue[1].push([controller, name, room])
+        - room.memory.task_queue[5].push([controller, name, room])
          - break
       - energy_fill:
-        - room.memory.task_queue[2].push(energy_fill, name, room)
+        - room.memory.task_queue[10].push(energy_fill, name, room)
+        - break;
+      - repair
+        - room.memory.task_queue[15].push(repair, name, room)
+        - break;
+      - build
+        - room.memory.task_queue[20].push(build, name, room)
         - break;
   - helper_init_room **TODO**
   - helper_init_global **TODO**
