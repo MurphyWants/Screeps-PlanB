@@ -78,6 +78,7 @@
         - break;
       - controller:
         - room.memory.task_queue[1].push([controller, name, room])
+         - break
       - energy_fill:
         - room.memory.task_queue[2].push(energy_fill, name, room)
         - break;
