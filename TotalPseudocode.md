@@ -7,9 +7,12 @@
         - **Expand**
   - Enqueue Tasks
     - **Expand**
-    - If anything needs building, add it to build queue
-    - If anything needs repairing, add it to repair queue
-    - If anything needs energy, add it to energy queue
+    - For each spawner, if energy is equal to 0,
+      - If spawner.memory.IsQueued is undefined, define it to be false. If spawner.memory.IsQueued is false, then: helper function: helper_add_queue(spawner, spawner.name, spawner.room)
+    - For each container, extension, lab, link, nuker, powerspawn, storage,tower when energy is 0
+      - if structures.memory.IsQueued is undefined, define it to false. If structures.memory.IsQueued is false, then: helper_add_queue(energy_fill, structure.name, structure.room)
+      - Define name as [structuretype, name]
+    - For each controller, if controller.memory.creep_task is false (should be creep name), helper_add_queue(controller, controller_name, room)
   - For each creep; by role
     - Patrol unit
       - Switch (true)
@@ -68,3 +71,15 @@
           ]
     - const Pos = new RoomPosition(Object.x, Object.y, roomname)
     - Pos.lookfor(road) or lookfor(construction_site for road), if found, end, else make construction for road
+  - helper_add_queue(type, name, room)
+    - switch(type)
+      - spawner:
+        - room.memory.task_queue[0].push([spawner, name, room])
+        - break;
+      - controller:
+        - room.memory.task_queue[1].push([controller, name, room])
+      - energy_fill:
+        - room.memory.task_queue[2].push(energy_fill, name, room)
+        - break;
+  - helper_init_room **TODO**
+  - helper_init_global **TODO**
