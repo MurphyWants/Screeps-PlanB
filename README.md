@@ -17,7 +17,7 @@ Pseudocode:
 
 Flag Usage:
 - Orange Flags: Spawns Patrol Units at flag
-- White Flags: Creeps harvesting at source
+- White Flags: Creeps harvesting at source open spaces
 - Grey Flags: Creeps wait line at source
 
 // Game.flags["Guard1"].pos.look()[1].type
